@@ -1,0 +1,79 @@
+:root {
+  /* Backgrounds — layered depth */
+  --bg-base: #080810;
+  --bg-surface: #0f0f18;
+  --bg-elevated: #16161f;
+  --bg-overlay: #1e1e2a;
+
+  /* Borders */
+  --border-dim: rgba(255, 255, 255, 0.05);
+  --border-soft: rgba(255, 255, 255, 0.09);
+  --border-mid: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.22);
+
+  /* Text */
+  --text-primary: #eeeef5;
+  --text-secondary: #9898ad;
+  --text-muted: #55556a;
+  --text-disabled: #33333f;
+
+  /* Semantic / Tab accents */
+  --accent-python: #3b82f6;
+  --accent-node: #22c55e;
+  --accent-brew: #f59e0b;
+
+  /* Danger / delete */
+  --danger: #ef4444;
+  --danger-glow: rgba(239, 68, 68, 0.18);
+  --danger-border: rgba(239, 68, 68, 0.3);
+
+  /* Success / feedback */
+  --success: #10b981;
+  --success-glow: rgba(16, 185, 129, 0.15);
+
+  /* Accent tint system — Python */
+  --accent-python-bg: rgba(59, 130, 246, 0.1);
+  --accent-python-border: rgba(59, 130, 246, 0.28);
+  --accent-python-glow: rgba(59, 130, 246, 0.12);
+  --accent-python-text: #93c5fd;
+
+  /* Accent tint system — Node */
+  --accent-node-bg: rgba(34, 197, 94, 0.1);
+  --accent-node-border: rgba(34, 197, 94, 0.28);
+  --accent-node-glow: rgba(34, 197, 94, 0.12);
+  --accent-node-text: #86efac;
+
+  /* Accent tint system — Brew */
+  --accent-brew-bg: rgba(245, 158, 11, 0.1);
+  --accent-brew-border: rgba(245, 158, 11, 0.28);
+  --accent-brew-glow: rgba(245, 158, 11, 0.12);
+  --accent-brew-text: #fcd34d;
+
+  /* Typography scale */
+  --text-display: 26px;
+  --text-heading: 18px;
+  --text-label: 13px;
+  --text-body: 13px;
+  --text-meta: 11px;
+  --text-micro: 10px;
+
+  /* Font stacks (spec) */
+  --font-display: "Syne", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --font-data: "JetBrains Mono", "Courier New", monospace;
+}
+
+/* Global page tokens */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-data);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+

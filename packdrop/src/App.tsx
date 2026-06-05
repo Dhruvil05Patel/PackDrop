@@ -1,51 +1,64 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import BackgroundShader from "./components/BackgroundShader";
+import Toast from "./components/Toast";
+import StatsBar from "./components/StatsBar";
+import TabBar from "./components/TabBar";
+import PackageList from "./components/PackageList";
+import DeleteDropZone from "./components/DeleteDropZone";
+import ConfirmModal from "./components/ConfirmModal";
 
-function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+import { useMemo, useState } from "react";
+import { usePackages } from "./hooks/usePackages";
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+export default function App() {
+  const { activeTab, packagesForActiveTab, fetchPackages, uninstallSelected, toggleSelect } = usePackages();
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const selectedCount = useMemo(() => packagesForActiveTab.filter((p) => p.selected).length, [packagesForActiveTab]);
+  const totalCount = packagesForActiveTab.length;
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+    <div>
+      <BackgroundShader />
+      <Toast />
 
-      <div className="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
+      <main
+        className="mx-auto"
+        style={{
+          maxWidth: 860,
+          padding: "28px 20px",
+          position: "relative",
+          zIndex: 0,
         }}
       >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <TabBar
+            activeTab={activeTab}
+            onTabChange={(tab: typeof activeTab) => {
+              fetchPackages(tab);
+            }}
+          />
+
+          <StatsBar totalCount={totalCount} selectedCount={selectedCount} activeTabLabel={activeTab} />
+
+          <PackageList packages={packagesForActiveTab} onToggleSelect={toggleSelect} />
+
+          <DeleteDropZone
+            selectedCount={selectedCount}
+            onRequestConfirm={() => setConfirmOpen(true)}
+          />
+
+          <ConfirmModal
+            open={confirmOpen}
+            packages={packagesForActiveTab.filter((p) => p.selected)}
+            onCancel={() => setConfirmOpen(false)}
+            onConfirm={async () => {
+              await uninstallSelected();
+              setConfirmOpen(false);
+            }}
+          />
+        </div>
+      </main>
+    </div>
   );
 }
 
-export default App;
